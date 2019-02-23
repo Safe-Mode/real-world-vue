@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1>Event Listening</h1>
+    <h1>Event Listing</h1>
+    <router-link :to="{ name: 'event-show', params: { id: 1 } }"
+      >First event</router-link
+    >
   </div>
 </template>
 
