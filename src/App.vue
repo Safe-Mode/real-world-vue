@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'event-list' }">List</router-link>|
-      <router-link :to="{ name: 'event-create' }">Create</router-link>
-    </div>
+    <NavBar />
     <router-view />
   </div>
 </template>
+
+<script>
+import NavBar from '@/components/NavBar.vue'
+
+export default {
+  components: {
+    NavBar
+  }
+}
+</script>
 
 <style>
 html {
@@ -61,6 +68,7 @@ h1 {
   font-size: 50px;
   font-weight: 700;
 }
+
 h2 {
   font-size: 38px;
   font-weight: 700;
