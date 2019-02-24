@@ -44,6 +44,20 @@
       "date": "2019-02-02T23:27:00.000Z",
       "time": "1:00",
       "attendees": []
+    },
+    {
+      "id": 9151977,
+      "category": "nature",
+      "organizer": {
+        "id": "abc123",
+        "name": "Adam Jahr"
+      },
+      "title": "Fuck Ksusha",
+      "description": "Hard",
+      "location": "Forest",
+      "date": "2019-02-24T21:27:00.000Z",
+      "time": "1:00",
+      "attendees": []
     }
   ]
 }
