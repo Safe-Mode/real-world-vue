@@ -89,17 +89,13 @@ export default {
       }
     },
     createEvent() {
-      this.createEvent(this.event)
-        .then(() => {
-          this.$router.push({
-            name: 'event-show',
-            params: { id: this.event.id }
-          })
-          this.event = this.createFreshEventObject()
+      this.createEvent(this.event).then(() => {
+        this.$router.push({
+          name: 'event-show',
+          params: { id: this.event.id }
         })
-        .catch(() => {
-          console.log('There was a problem creating your event.')
-        })
+        this.event = this.createFreshEventObject()
+      })
     },
     ...mapActions('event', ['createEvent'])
   },
