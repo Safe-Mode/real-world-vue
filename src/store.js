@@ -47,7 +47,10 @@ export default new Vuex.Store({
     fetchEvents({ commit }, { perPage, page }) {
       EventService.getEvents(perPage, page)
         .then(response => {
-          commit('GET_EVENTS_TOTAL', response.headers['x-total-count'])
+          commit(
+            'GET_EVENTS_TOTAL',
+            parseInt(response.headers['x-total-count'])
+          )
           commit('SET_EVENTS', response.data)
         })
         .catch(err => {

@@ -10,15 +10,17 @@
         rel="prev"
         >Prev Page
       </router-link>
+      <template v-if="hasNextPage">
+        |
+      </template>
     </template>
 
-    <template v-if="eventsTotal > page * perPage">
-      <router-link
-        :to="{ name: 'event-list', query: { page: page + 1 } }"
-        rel="next"
-        >Next Page
-      </router-link>
-    </template>
+    <router-link
+      v-if="hasNextPage"
+      :to="{ name: 'event-list', query: { page: page + 1 } }"
+      rel="next"
+      >Next Page
+    </router-link>
   </div>
 </template>
 
@@ -26,14 +28,7 @@
 import { mapState } from 'vuex'
 import EventCard from '@/components/EventCard.vue'
 
-const PER_PAGE = 3
-
 export default {
-  data() {
-    return {
-      perPage: PER_PAGE
-    }
-  },
   components: {
     EventCard
   },
@@ -41,9 +36,14 @@ export default {
     page() {
       return parseInt(this.$route.query.page) || 1
     },
+    hasNextPage() {
+      return this.eventsTotal > this.page * this.perPage
+    },
     ...mapState(['events', 'eventsTotal'])
   },
   created() {
+    this.perPage = 3
+
     this.$store.dispatch('fetchEvents', {
       perPage: this.perPage,
       page: this.page
