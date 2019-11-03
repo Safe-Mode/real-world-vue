@@ -50,8 +50,7 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
-// import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import Datepicker from 'vuejs-datepicker'
 
 export default {
@@ -90,8 +89,7 @@ export default {
       }
     },
     createEvent() {
-      this.$store
-        .dispatch('createEvent', this.event)
+      this.createEvent(this.event)
         .then(() => {
           this.$router.push({
             name: 'event-show',
@@ -102,7 +100,8 @@ export default {
         .catch(() => {
           console.log('There was a problem creating your event.')
         })
-    }
+    },
+    ...mapActions('event', ['createEvent'])
   },
   components: {
     Datepicker
