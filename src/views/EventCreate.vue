@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <h1>Create Event, {{ user.name }}</h1> -->
-    <!-- <p>This event is created by {{ user.name }}</p> -->
     <form @submit.prevent="createEvent">
       <label>Select a category</label>
       <select v-model="event.category">
@@ -50,8 +48,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Datepicker from 'vuejs-datepicker'
+import NProgress from 'nprogress'
 
 export default {
   data() {
@@ -62,17 +60,13 @@ export default {
     }
 
     return {
-      event: this.createFreshEvent(),
+      event: this.createFreshEventObject(),
       times,
       categories: this.$store.state.categories
     }
   },
-  // computed: {
-  //   ...mapState(['user', 'categories']),
-  //   ...mapGetters(['catLength', 'getEvent'])
-  // },
   methods: {
-    createFreshEvent() {
+    createFreshEventObject() {
       const user = this.$store.state.user
       const id = Math.floor(Math.random() * 10000000)
 
@@ -89,15 +83,22 @@ export default {
       }
     },
     createEvent() {
-      this.createEvent(this.event).then(() => {
-        this.$router.push({
-          name: 'event-show',
-          params: { id: this.event.id }
+      NProgress.start()
+
+      this.$store
+        .dispatch('event/createEvent', this.event)
+        .then(() => {
+          this.$router.push({
+            name: 'event-show',
+            params: { id: this.event.id }
+          })
+
+          this.event = this.createFreshEventObject()
         })
-        this.event = this.createFreshEventObject()
-      })
-    },
-    ...mapActions('event', ['createEvent'])
+        .catch(() => {
+          NProgress.done()
+        })
+    }
   },
   components: {
     Datepicker

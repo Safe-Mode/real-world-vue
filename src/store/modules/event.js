@@ -39,7 +39,8 @@ export const actions = {
           message: 'Your event has been created!'
         }
 
-        commit('ADD_EVENT', event.data)
+        commit('ADD_EVENT', event)
+        commit('SET_EVENT', event)
         dispatch('notification/add', notification, { root: true })
       })
       .catch(error => {
@@ -67,7 +68,11 @@ export const actions = {
         dispatch('notification/add', notification, { root: true })
       })
   },
-  fetchEvent({ commit, getters, dispatch }, id) {
+  fetchEvent({ commit, getters, dispatch, state }, id) {
+    if (id == state.event.id) {
+      return state.event
+    }
+
     const event = getters.getEventById(id)
 
     if (event) {
