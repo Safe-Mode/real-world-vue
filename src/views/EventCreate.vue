@@ -50,7 +50,8 @@
         </select>
       </div>
 
-      <input type="submit" class="button -fill-gradient" value="Submit" />
+      <!-- <input type="submit" class="button -fill-gradient" value="Submit" /> -->
+      <BaseButton type="submit" class="-fill-gradient">Submit</BaseButton>
     </form>
   </div>
 </template>
