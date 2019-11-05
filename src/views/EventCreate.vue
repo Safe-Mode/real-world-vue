@@ -1,11 +1,12 @@
 <template>
   <div>
     <form @submit.prevent="createEvent">
-      <label>Select a category</label>
-
-      <select v-model="event.category">
-        <option v-for="cat in categories" :key="cat">{{ cat }}</option>
-      </select>
+      <BaseSelect
+        class="field"
+        v-model="event.category"
+        label="Select a category"
+        :options="categories"
+      />
 
       <h3>Name & describe your event</h3>
 
