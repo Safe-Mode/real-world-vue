@@ -62,6 +62,10 @@ const router = new Router({
         name: '404',
         params: { resource: 'page' }
       }
+    },
+    {
+      path: '/example',
+      component: () => import('./views/Example.vue')
     }
   ]
 })

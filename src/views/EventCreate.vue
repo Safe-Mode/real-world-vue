@@ -6,52 +6,94 @@
         v-model="event.category"
         label="Select a category"
         :options="categories"
+        :class="{ error: $v.event.category.$error }"
+        @blur="$v.event.category.$touch"
       />
+
+      <template v-if="$v.event.category.$error">
+        <p v-if="!$v.event.category.required">Category is required</p>
+      </template>
 
       <h3>Name & describe your event</h3>
 
       <BaseInput
         class="field"
+        :class="{ error: $v.event.title.$error }"
         label="title"
         v-model="event.title"
         type="text"
         placeholder="Add an event title"
+        @blur="$v.event.title.$touch"
       />
+
+      <template v-if="$v.event.title.$error">
+        <p v-if="!$v.event.title.required">Title is required</p>
+      </template>
 
       <BaseInput
         class="field"
+        :class="{ error: $v.event.description.$error }"
         label="description"
         v-model="event.description"
         type="text"
         placeholder="Add a description"
+        @blur="$v.event.description.$touch"
       />
+
+      <template v-if="$v.event.description.$error">
+        <p v-if="!$v.event.description.required">Description is required</p>
+      </template>
 
       <h3>Where is your event?</h3>
 
       <BaseInput
         class="field"
+        :class="{ error: $v.event.location.$error }"
         label="location"
         v-model="event.location"
         type="text"
         placeholder="Add a location"
+        @blur="$v.event.location.$touch"
       />
+
+      <template v-if="$v.event.location.$error">
+        <p v-if="!$v.event.location.required">Location is required</p>
+      </template>
 
       <h3>When is your event?</h3>
 
       <div class="field">
         <label>Date</label>
-        <datepicker v-model="event.date" placeholder="Select a date" />
+        <datepicker
+          v-model="event.date"
+          :input-class="{ error: $v.event.date.$error }"
+          placeholder="Select a date"
+          @opened="$v.event.date.$touch"
+        />
       </div>
 
-      <div class="field">
-        <label>Select a time</label>
-        <select v-model="event.time">
-          <option v-for="time in times" :key="time">{{ time }}</option>
-        </select>
-      </div>
+      <template v-if="$v.event.date.$error">
+        <p v-if="!$v.event.date.required">Date is required</p>
+      </template>
 
-      <!-- <input type="submit" class="button -fill-gradient" value="Submit" /> -->
-      <BaseButton type="submit" class="-fill-gradient">Submit</BaseButton>
+      <BaseSelect
+        class="field"
+        v-model="event.time"
+        label="Select a time"
+        :options="times"
+        :class="{ error: $v.event.time.$error }"
+        @blur="$v.event.time.$touch"
+      />
+
+      <template v-if="$v.event.time.$error">
+        <p v-if="!$v.event.time.required">Time is required</p>
+      </template>
+
+      <BaseButton type="submit" class="-fill-gradient" :disabled="$v.$anyError"
+        >Submit</BaseButton
+      >
+
+      <p v-if="$v.$anyError">Please fill out the required field(s)</p>
     </form>
   </div>
 </template>
@@ -59,6 +101,7 @@
 <script>
 import Datepicker from 'vuejs-datepicker'
 import NProgress from 'nprogress'
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   data() {
@@ -92,25 +135,39 @@ export default {
       }
     },
     createEvent() {
-      NProgress.start()
+      this.$v.$touch()
 
-      this.$store
-        .dispatch('event/createEvent', this.event)
-        .then(() => {
-          this.$router.push({
-            name: 'event-show',
-            params: { id: this.event.id }
+      if (!this.$v.$invalid) {
+        NProgress.start()
+
+        this.$store
+          .dispatch('event/createEvent', this.event)
+          .then(() => {
+            this.$router.push({
+              name: 'event-show',
+              params: { id: this.event.id }
+            })
+
+            this.event = this.createFreshEventObject()
           })
-
-          this.event = this.createFreshEventObject()
-        })
-        .catch(() => {
-          NProgress.done()
-        })
+          .catch(() => {
+            NProgress.done()
+          })
+      }
     }
   },
   components: {
     Datepicker
+  },
+  validations: {
+    event: {
+      category: { required },
+      title: { required },
+      description: { required },
+      location: { required },
+      date: { required },
+      time: { required }
+    }
   }
 }
 </script>
