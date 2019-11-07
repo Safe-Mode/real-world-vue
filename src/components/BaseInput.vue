@@ -11,17 +11,10 @@
 </template>
 
 <script>
+import formFieldMixin from '../mixins/formFieldMixin.js'
+
 export default {
-  inheritAttrs: false,
-  props: {
-    value: [Number, String],
-    label: String
-  },
-  methods: {
-    updateValue(evt) {
-      this.$emit('input', evt.target.value)
-    }
-  },
+  mixins: [formFieldMixin],
   computed: {
     listeners() {
       return {
