@@ -6,8 +6,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store/store'
 import 'nprogress/nprogress.css'
+import DateFilter from './filters/date'
 
 Vue.use(Vuelidate)
+Vue.use('date', DateFilter)
 
 const requireComponent = require.context(
   './components',
